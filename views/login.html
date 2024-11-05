@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap</title>
+    <link rel="stylesheet" href="/css/styles.css"> <!-- CSS dosyasını bağlayın -->
+</head>
+<body>
+<h1>Giriş Yap</h1>
+<form id="loginForm">
+    <input type="email" placeholder="Email" required />
+    <input type="password" placeholder="Şifre" required />
+    <button type="submit">Giriş Yap</button>
+</form>
+<p>Hesabınız yok mu? <a href="/register.html">Kayıt Ol</a></p>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+        event.preventDefault(); // Formun otomatik olarak gönderilmesini engelle
+
+        const email = this.querySelector('input[type="email"]').value;
+        const password = this.querySelector('input[type="password"]').value;
+
+        const response = await fetch('/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert("Giriş başarılı!");
+            window.location.href = '../views/index.html'; // Giriş başarılıysa ana sayfaya yönlendir
+        } else {
+            alert(result.message);
+        }
+    });
+</script>
+</body>
+</html>

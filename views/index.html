@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Anasayfa</title>
+</head>
+<body>
+<h1>Hoş Geldiniz!</h1>
+<div id="userInfo"></div>
+<button onclick="logout()">Çıkış Yap</button>
+<script>
+    async function fetchUserInfo() {
+        const response = await fetch('/auth/user-info', { credentials: 'include' });
+        const data = await response.json();
+        if (data.success) {
+            document.getElementById('userInfo').innerText = `Kullanıcı: ${data.username} ${data.firstName} ${data.lastName} (${data.email})`;
+        } else {
+            document.getElementById('userInfo').innerText = "Giriş yapmadınız.";
+        }
+    }
+
+    async function logout() {
+        await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
+        window.location.href = '/login.html';
+    }
+
+    fetchUserInfo();
+</script>
+</body>
+</html>
